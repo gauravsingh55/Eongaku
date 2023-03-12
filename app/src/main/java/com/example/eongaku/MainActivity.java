@@ -1,8 +1,5 @@
 package com.example.eongaku;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,8 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.eongaku.ml.Model;
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -28,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView iv;
     FloatingActionButton fab;
-    TextView result;
+    Button music;
+    int result;
     int imageSize = 224;
 
 
@@ -39,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         iv = findViewById(R.id.imageView) ;
-        fab = findViewById(R.id.imageButton) ;
-        result = findViewById(R.id.textView);
+        fab = findViewById(R.id.imageButton);
+        music = findViewById(R.id.music);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +49,15 @@ public class MainActivity extends AppCompatActivity {
                 ImagePicker.with(MainActivity.this)
                         .crop(1f,1f)	    			//Crop image(Optional), Check Customization for more option
                         .start();
+            }
+        });
+
+        music.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this,MusicActivity.class);
+                i.putExtra("emotion",result);
+                startActivity(i);
             }
         });
 
@@ -91,14 +101,15 @@ public class MainActivity extends AppCompatActivity {
                     maxPos = i;
                 }
             }
-            String[] classes = {"Fear", "Happy", "Nutral", "Sad"};
-            result.setText(classes[maxPos]);
+
+            result = maxPos;
 
             // Releases model resources if no longer used.
             model.close();
         } catch (IOException e) {
             // TODO Handle the exception
         }
+        music.setVisibility(View.VISIBLE);
     }
 
     @Override
