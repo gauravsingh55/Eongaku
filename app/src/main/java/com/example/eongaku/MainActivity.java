@@ -46,16 +46,19 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //We are using the ImagePicker library to get the image for the app
                 ImagePicker.with(MainActivity.this)
-                        .crop(1f,1f)	    			//Crop image(Optional), Check Customization for more option
+                        .crop(1f,1f)	    			//Crop image to square shape
                         .start();
             }
         });
 
+        //Going to the MusicActivity
         music.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this,MusicActivity.class);
+                //Passing the classification result to the MusicActivity
                 i.putExtra("emotion",result);
                 startActivity(i);
             }
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Function to perform Classification
     public void classifyImage(Bitmap image){
         try {
             Model model = Model.newInstance(getApplicationContext());
@@ -109,13 +113,16 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             // TODO Handle the exception
         }
+        //Enable the visibility of the button that will allow to move to the MusicActivity
         music.setVisibility(View.VISIBLE);
     }
 
+    //This function gets the image, transforms it and sends the transformed image for classification
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //the image is fetched in URI form and transformed into a Bitmap
         Uri uri = data.getData();
         Bitmap image = null;
         try {
@@ -125,8 +132,10 @@ public class MainActivity extends AppCompatActivity {
         }
         iv.setImageBitmap(image);
 
+        //The Bitmap is re-sized so it can be passed as input for the model
         image = Bitmap.createScaledBitmap(image,imageSize,imageSize,false);
 
+        //Classification of the image
         classifyImage(image);
     }
 }
