@@ -12,8 +12,8 @@ Requirements to run the code
 ------------------------------------------------------------------------------------------------------------
     ImagePicker library for kotlin and java
   
-     A Tensor Flow Lite Model for classification, 
-     Checkout my Emotion-Detection-model repository.
+    A Tensor Flow Lite Model for classification, 
+    Checkout my Emotion-Detection-model repository.
   
 -------------------------------------------------------------------------------------------------------------
 
