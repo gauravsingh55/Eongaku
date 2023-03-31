@@ -113,8 +113,4 @@ public class MusicActivity extends AppCompatActivity {
         stopPlayer();
     }
 
-
-
-
-
 }
