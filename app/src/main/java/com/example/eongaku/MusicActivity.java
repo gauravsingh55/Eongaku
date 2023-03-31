@@ -4,15 +4,20 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MusicActivity extends AppCompatActivity {
 
     MediaPlayer [] player = new MediaPlayer[4];
     TextView result;
+    SeekBar seekBar;
     String[] classes = {"Fear", "Happy", "Neutral", "Sad"};
     int emotion;
 
@@ -21,6 +26,7 @@ public class MusicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
         result = findViewById(R.id.resutlView);
+        seekBar = findViewById(R.id.seekBar);
 
         //Initialize all the songs for each emotion
         player[0] = MediaPlayer.create(this, R.raw.fear);
@@ -35,6 +41,32 @@ public class MusicActivity extends AppCompatActivity {
 
         //Setting the emotion in the TextField
         result.setText(classes[emotion]);
+
+        //Code for Seek Bar
+        seekBar.setMax(player[emotion].getDuration());
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                seekBar.setProgress(player[emotion].getCurrentPosition());
+            }
+        },0,900);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if(b)
+                    player[emotion].seekTo(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     //Function for the play button
@@ -80,4 +112,9 @@ public class MusicActivity extends AppCompatActivity {
         super.onStop();
         stopPlayer();
     }
+
+
+
+
+
 }
